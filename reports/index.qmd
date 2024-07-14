@@ -79,7 +79,7 @@ Data was processed with version 2.10.0 of the nf-core/ampliseq pipeline [@straub
 
 ## Relative Taxonomic Abundance
 
-The full data for the calculated taxonomic abundance can be interacted with in the following page: <https://jvfe.github.io/cochineal_16s/qiime2_relative_abundance/>. It enables analysis at every taxonomic level, showing the relative frequency of each taxa at that level.
+The full data for the calculated taxonomic abundance can be interacted with in the following page: <https://dalmolingroup.github.io/cochineal_16s/qiime2_relative_abundance/>. It enables analysis at every taxonomic level, showing the relative frequency of each taxa at that level.
 
 By far the most abundant taxa is *Candidatus Uzinura*, which has been described previously as an endosymbiont in armored scaled insects [@sabree2013].
 

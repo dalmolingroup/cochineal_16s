@@ -1,0 +1,53 @@
+---
+title: "Cochineal 16s"
+format: html
+---
+
+A 16S data analysis of the cochineal metagenome.
+
+## Directory Structure
+
+```         
+cochineal_16s
+  ├── reports -> R Analysis Notebooks 
+  ├── data -> Raw data, metadata and processed results
+  ├── docs -> Documentation
+  └── pipes -> Scripts to reproduce analysis from scratch
+```
+
+- The analysis notebooks are rendered in HTML and available [here](reports).
+
+## Reproducing the analysis
+
+### Environment setup
+
+1. First, clone the repository:
+
+```bash
+https://github.com/dalmolingroup/cochineal_16s.git
+```
+
+Then, from the root of the repository, you can run the rest of the analysis in the 
+steps outlined in this document.
+
+2. [Install nextflow](https://nextflow.io/docs/latest/install.html#installation)
+
+## Running the analysis
+
+1. Process the 16S data:
+
+```bash
+bash pipes/run_ampliseq.sh
+```
+
+2. Copy over useful results from the ampliseq execution:
+
+```bash
+bash pipes/copy_report.sh
+```
+
+3. Render quarto notebooks
+
+```bash
+quarto render
+```

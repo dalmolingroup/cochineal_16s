@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="João Vitor Cavalcante">
-<meta name="author" content="Bianca Santiago">
-<meta name="author" content="Rodrigo Dalmolin">
 
-<title>Cochineal 16S - Preliminary Results</title>
+<title>Cochineal 16s</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="index_files/libs/clipboard/clipboard.min.js"></script>
@@ -68,14 +79,12 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#methodology" id="toc-methodology" class="nav-link active" data-scroll-target="#methodology"><span class="header-section-number">1</span> Methodology</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">2</span> Results</a>
+  <li><a href="#directory-structure" id="toc-directory-structure" class="nav-link active" data-scroll-target="#directory-structure"><span class="header-section-number">1</span> Directory Structure</a></li>
+  <li><a href="#reproducing-the-analysis" id="toc-reproducing-the-analysis" class="nav-link" data-scroll-target="#reproducing-the-analysis"><span class="header-section-number">2</span> Reproducing the analysis</a>
   <ul class="collapse">
-  <li><a href="#relative-taxonomic-abundance" id="toc-relative-taxonomic-abundance" class="nav-link" data-scroll-target="#relative-taxonomic-abundance"><span class="header-section-number">2.1</span> Relative Taxonomic Abundance</a></li>
-  <li><a href="#alpha-diversity" id="toc-alpha-diversity" class="nav-link" data-scroll-target="#alpha-diversity"><span class="header-section-number">2.2</span> Alpha Diversity</a></li>
-  <li><a href="#functional-prediction" id="toc-functional-prediction" class="nav-link" data-scroll-target="#functional-prediction"><span class="header-section-number">2.3</span> Functional Prediction</a></li>
+  <li><a href="#environment-setup" id="toc-environment-setup" class="nav-link" data-scroll-target="#environment-setup"><span class="header-section-number">2.1</span> Environment setup</a></li>
   </ul></li>
-  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements"><span class="header-section-number">3</span> Acknowledgements</a></li>
+  <li><a href="#running-the-analysis" id="toc-running-the-analysis" class="nav-link" data-scroll-target="#running-the-analysis"><span class="header-section-number">3</span> Running the analysis</a></li>
   </ul>
 </nav>
 </div>
@@ -83,21 +92,13 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Cochineal 16S - Preliminary Results</h1>
+<h1 class="title">Cochineal 16s</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Authors</div>
-    <div class="quarto-title-meta-contents">
-             <p>João Vitor Cavalcante <a href="https://orcid.org/0000-0001-7513-7376" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
-             <p>Bianca Santiago <a href="https://orcid.org/0000-0002-8037-6264" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
-             <p>Rodrigo Dalmolin <a href="https://orcid.org/0000-0002-1688-6155" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
-          </div>
-  </div>
     
   
     
@@ -108,70 +109,49 @@ div.csl-indent {
 </header>
 
 
-<section id="methodology" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Methodology</h1>
-<p>Data was processed with version 2.10.0 of the nf-core/ampliseq pipeline <span class="citation" data-cites="straub2020">(<a href="#ref-straub2020" role="doc-biblioref">Straub et al. 2020</a>)</span>. The pipeline uses DADA2 <span class="citation" data-cites="callahan2016">(<a href="#ref-callahan2016" role="doc-biblioref">Callahan et al. 2016</a>)</span> for Amplicon-sequence variant (ASV) inference, QIIME2 <span class="citation" data-cites="bolyen2019">(<a href="#ref-bolyen2019" role="doc-biblioref">Bolyen et al. 2019</a>)</span> for calculating diversity indices and PICRUSt2 <span class="citation" data-cites="douglas2020">(<a href="#ref-douglas2020" role="doc-biblioref">Douglas et al. 2020</a>)</span> for predicting the functional potential of bacteria.</p>
+<p>A 16S data analysis of the cochineal metagenome.</p>
+<section id="directory-structure" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="directory-structure"><span class="header-section-number">1</span> Directory Structure</h2>
+<pre><code>cochineal_16s
+  ├── reports -&gt; R Analysis Notebooks 
+  ├── data -&gt; Raw data, metadata and processed results
+  ├── docs -&gt; Documentation
+  └── pipes -&gt; Scripts to reproduce analysis from scratch</code></pre>
+<ul>
+<li>The analysis notebooks are rendered in HTML and available <a href="reports">here</a>.</li>
+</ul>
 </section>
-<section id="results" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Results</h1>
-<section id="relative-taxonomic-abundance" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="relative-taxonomic-abundance"><span class="header-section-number">2.1</span> Relative Taxonomic Abundance</h2>
-<p>The full data for the calculated taxonomic abundance can be interacted with in the following page: <a href="https://dalmolingroup.github.io/cochineal_16s/qiime2_relative_abundance/" class="uri">https://dalmolingroup.github.io/cochineal_16s/qiime2_relative_abundance/</a>. It enables analysis at every taxonomic level, showing the relative frequency of each taxa at that level.</p>
-<p>By far the most abundant taxa is <em>Candidatus Uzinura</em>, which has been described previously as an endosymbiont in armored scaled insects <span class="citation" data-cites="sabree2013">(<a href="#ref-sabree2013" role="doc-biblioref">Sabree et al. 2013</a>)</span>.</p>
-</section>
-<section id="alpha-diversity" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="alpha-diversity"><span class="header-section-number">2.2</span> Alpha Diversity</h2>
-<p>The Shannon Diversity Index was calculated for each sample, here presented by the group they were assigned to in the sample name.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="functional-prediction" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="functional-prediction"><span class="header-section-number">2.3</span> Functional Prediction</h2>
-<p>Below are the 30 most common pathways in all samples, as predicted by PICRUSt2. Pathway data is from the MetaCyc database <span class="citation" data-cites="caspi2018">(<a href="#ref-caspi2018" role="doc-biblioref">Caspi et al. 2018</a>)</span>. Values are the log10 transformed predicted abundances from PICRUSt2.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="reproducing-the-analysis" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="reproducing-the-analysis"><span class="header-section-number">2</span> Reproducing the analysis</h2>
+<section id="environment-setup" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="environment-setup"><span class="header-section-number">2.1</span> Environment setup</h3>
+<ol type="1">
+<li>First, clone the repository:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">https://github.com/dalmolingroup/cochineal_16s.git</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, from the root of the repository, you can run the rest of the analysis in the steps outlined in this document.</p>
+<ol start="2" type="1">
+<li><a href="https://nextflow.io/docs/latest/install.html#installation">Install nextflow</a></li>
+</ol>
 </section>
 </section>
-<section id="acknowledgements" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Acknowledgements</h1>
-<p>We would like to thank NPAD/UFRN for computational resources expended.</p>
-
+<section id="running-the-analysis" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="running-the-analysis"><span class="header-section-number">3</span> Running the analysis</h2>
+<ol type="1">
+<li>Process the 16S data:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> pipes/run_ampliseq.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li>Copy over useful results from the ampliseq execution:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> pipes/copy_report.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li>Render quarto notebooks</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-bolyen2019" class="csl-entry" role="listitem">
-Bolyen, Evan, Jai Ram Rideout, Matthew R. Dillon, Nicholas A. Bokulich, Christian C. Abnet, Gabriel A. Al-Ghalith, Harriet Alexander, et al. 2019. <span>“Reproducible, Interactive, Scalable and Extensible Microbiome Data Science Using QIIME 2.”</span> <em>Nature Biotechnology</em> 37 (8): 852–57. <a href="https://doi.org/10.1038/s41587-019-0209-9">https://doi.org/10.1038/s41587-019-0209-9</a>.
-</div>
-<div id="ref-callahan2016" class="csl-entry" role="listitem">
-Callahan, Benjamin J., Paul J. McMurdie, Michael J. Rosen, Andrew W. Han, Amy Jo A. Johnson, and Susan P. Holmes. 2016. <span>“DADA2: High-Resolution Sample Inference from Illumina Amplicon Data.”</span> <em>Nature Methods</em> 13 (7): 581–83. <a href="https://doi.org/10.1038/nmeth.3869">https://doi.org/10.1038/nmeth.3869</a>.
-</div>
-<div id="ref-caspi2018" class="csl-entry" role="listitem">
-Caspi, Ron, Richard Billington, Carol A Fulcher, Ingrid M Keseler, Anamika Kothari, Markus Krummenacker, Mario Latendresse, et al. 2018. <span>“The MetaCyc Database of Metabolic Pathways and Enzymes.”</span> <em>Nucleic Acids Research</em> 46 (Database issue): D633–39. <a href="https://doi.org/10.1093/nar/gkx935">https://doi.org/10.1093/nar/gkx935</a>.
-</div>
-<div id="ref-douglas2020" class="csl-entry" role="listitem">
-Douglas, Gavin M., Vincent J. Maffei, Jesse R. Zaneveld, Svetlana N. Yurgel, James R. Brown, Christopher M. Taylor, Curtis Huttenhower, and Morgan G. I. Langille. 2020. <span>“PICRUSt2 for Prediction of Metagenome Functions.”</span> <em>Nature Biotechnology</em> 38 (6): 685–88. <a href="https://doi.org/10.1038/s41587-020-0548-6">https://doi.org/10.1038/s41587-020-0548-6</a>.
-</div>
-<div id="ref-sabree2013" class="csl-entry" role="listitem">
-Sabree, Zakee L., Charlie Y. Huang, Akiko Okusu, Nancy A. Moran, and Benjamin B. Normark. 2013. <span>“The Nutrient Supplying Capabilities of Uzinura, an Endosymbiont of Armoured Scale Insects.”</span> <em>Environmental Microbiology</em> 15 (7): 1988–99. <a href="https://doi.org/10.1111/1462-2920.12058">https://doi.org/10.1111/1462-2920.12058</a>.
-</div>
-<div id="ref-straub2020" class="csl-entry" role="listitem">
-Straub, Daniel, Nia Blackwell, Adrian Langarica-Fuentes, Alexander Peltzer, Sven Nahnsen, and Sara Kleindienst. 2020. <span>“Interpretations of Environmental Microbial Community Studies Are Biased by the Selected 16S rRNA (Gene) Amplicon Sequencing Pipeline.”</span> <em>Frontiers in Microbiology</em> 11 (October). <a href="https://doi.org/10.3389/fmicb.2020.550420">https://doi.org/10.3389/fmicb.2020.550420</a>.
-</div>
-</div></section></div></main>
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
