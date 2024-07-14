@@ -1,0 +1,139 @@
+---
+title: "Cochineal 16S - Preliminary Results"
+author:
+  - name: João Vitor Cavalcante
+    orcid: 0000-0001-7513-7376
+  - name: Bianca Santiago
+    orcid: 0000-0002-8037-6264
+  - name: Rodrigo Dalmolin
+    orcid: 0000-0002-1688-6155
+format: html
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = TRUE
+)
+```
+
+```{r}
+library(vroom)
+library(dplyr)
+library(here)
+library(DT)
+library(stringr)
+library(reactable)
+library(ggplot2)
+library(pheatmap)
+library(tidyr)
+
+make_datatable <- function(data, col_names) {
+  data %>%
+    datatable(
+      .,
+      extensions = "Buttons",
+      rownames = FALSE,
+      escape = FALSE,
+      colnames = col_names,
+      filter = 'top',
+      options = list(
+        lengthMenu = c(5, 10, 25, 50, 100),
+        pageLength = 5,
+        scrollY = 200,
+        scroller = TRUE,
+        dom = '<"d-flex justify-content-between"lBf>rtip',
+        buttons = list(
+          'copy',
+          list(
+            extend = 'collection',
+            buttons = c('csv', 'excel'),
+            text = 'Download'
+          )
+        )
+      )
+    )
+}
+
+samples <- c(
+  "GRUPO_1_1",
+  "GRUPO_1_2",
+  "GRUPO_1_3",
+  "GRUPO_2_1",
+  "GRUPO_2_2",
+  "GRUPO_2_3",
+  "GRUPO_3_1",
+  "GRUPO_3_2",
+  "GRUPO_3_3"
+)
+```
+
+# Methodology
+
+Data was processed with version 2.10.0 of the nf-core/ampliseq pipeline [@straub2020]. The pipeline uses DADA2 [@callahan2016] for Amplicon-sequence variant (ASV) inference, QIIME2 [@bolyen2019] for calculating diversity indices and PICRUSt2 [@douglas2020] for predicting the functional potential of bacteria.
+
+# Results
+
+## Relative Taxonomic Abundance
+
+The full data for the calculated taxonomic abundance can be interacted with in the following page: <https://jvfe.github.io/cochineal_16s/qiime2_relative_abundance/>. It enables analysis at every taxonomic level, showing the relative frequency of each taxa at that level.
+
+By far the most abundant taxa is *Candidatus Uzinura*, which has been described previously as an endosymbiont in armored scaled insects [@sabree2013].
+
+## Alpha Diversity
+
+The Shannon Diversity Index was calculated for each sample, here presented by the group they were assigned to in the sample name.
+
+```{r}
+alpha_div <-
+  vroom(
+    here(
+      "data/ampliseq_results/qiime2/diversity/alpha_diversity/shannon_vector/metadata.tsv"
+    ),
+    comment = "#"
+  )
+
+ggplot(alpha_div, aes(y = group, x = shannon_entropy)) +
+  geom_boxplot() +
+  labs(
+    y = element_blank(),
+    x = "Shannon Index"
+  ) +
+  theme_classic()
+```
+
+## Functional Prediction
+
+Below are the 30 most common pathways in all samples, as predicted by PICRUSt2. Pathway data is from the MetaCyc database [@caspi2018]. Values are the log10 transformed predicted abundances from PICRUSt2.
+
+```{r}
+abundance <- vroom::vroom(here("data/ampliseq_results/picrust/METACYC_path_abun_unstrat_descrip.tsv"))
+
+common_paths <- abundance |> 
+  rowwise() %>%
+  mutate(total_sum = sum(c_across(starts_with("GRUPO_")), na.rm = TRUE)) %>%
+  ungroup() |> 
+  slice_max(total_sum, n = 30) |> 
+  select(-c(pathway, total_sum)) |> 
+  tibble::column_to_rownames("description") |>  
+  as.matrix()
+
+pheat <- pheatmap(
+  log10(common_paths),
+  border_color = "white",
+  cluster_rows = FALSE,
+  cluster_cols = FALSE,
+  color = RColorBrewer::brewer.pal(7, "Reds"),
+  na_col = "#fafafa",
+  fontsize = 10
+  # ,main = title
+)
+pheat
+```
+
+# Acknowledgements
+
+We would like to thank NPAD/UFRN for computational resources expended.
