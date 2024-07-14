@@ -55,8 +55,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
 
 # translation temp files
 po/*~
@@ -68,3 +66,5 @@ data/raw_data/
 data/ampliseq_results/
 work/
 .nextflow.log*
+
+/.quarto/
