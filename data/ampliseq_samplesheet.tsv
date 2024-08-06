@@ -1,10 +1,10 @@
-sampleID	forwardReads	reverseReads
-GRUPO_11	data/raw_data/GRUPO-1-1_S1_L001_R1_001.fastq.gz	data/raw_data/GRUPO-1-1_S1_L001_R2_001.fastq.gz
-GRUPO_12	data/raw_data/GRUPO-1-2_S2_L001_R1_001.fastq.gz	data/raw_data/GRUPO-1-2_S2_L001_R2_001.fastq.gz
-GRUPO_13	data/raw_data/GRUPO-1-3_S3_L001_R1_001.fastq.gz	data/raw_data/GRUPO-1-3_S3_L001_R2_001.fastq.gz
-GRUPO_21	data/raw_data/GRUPO-2-1_S4_L001_R1_001.fastq.gz	data/raw_data/GRUPO-2-1_S4_L001_R2_001.fastq.gz
-GRUPO_22	data/raw_data/GRUPO-2-2_S5_L001_R1_001.fastq.gz	data/raw_data/GRUPO-2-2_S5_L001_R2_001.fastq.gz
-GRUPO_23	data/raw_data/GRUPO-2-3_S6_L001_R1_001.fastq.gz	data/raw_data/GRUPO-2-3_S6_L001_R2_001.fastq.gz
-GRUPO_31	data/raw_data/GRUPO-3-1_S7_L001_R1_001.fastq.gz	data/raw_data/GRUPO-3-1_S7_L001_R2_001.fastq.gz
-GRUPO_32	data/raw_data/GRUPO-3-2_S8_L001_R1_001.fastq.gz	data/raw_data/GRUPO-3-2_S8_L001_R2_001.fastq.gz
-GRUPO_33	data/raw_data/GRUPO-3-3_S9_L001_R1_001.fastq.gz	data/raw_data/GRUPO-3-3_S9_L001_R2_001.fastq.gz
+sampleID        forwardReads    reverseReads    run
+GRUPO_11        data/raw_data/GRUPO-1-1_S1_L001_R1_001.fastq.gz data/raw_data/GRUPO-1-1_S1_L001_R2_001.fastq.gz GRUPO_1
+GRUPO_12        data/raw_data/GRUPO-1-2_S2_L001_R1_001.fastq.gz data/raw_data/GRUPO-1-2_S2_L001_R2_001.fastq.gz GRUPO_1
+GRUPO_13        data/raw_data/GRUPO-1-3_S3_L001_R1_001.fastq.gz data/raw_data/GRUPO-1-3_S3_L001_R2_001.fastq.gz GRUPO_1
+GRUPO_21        data/raw_data/GRUPO-2-1_S4_L001_R1_001.fastq.gz data/raw_data/GRUPO-2-1_S4_L001_R2_001.fastq.gz GRUPO_2
+GRUPO_22        data/raw_data/GRUPO-2-2_S5_L001_R1_001.fastq.gz data/raw_data/GRUPO-2-2_S5_L001_R2_001.fastq.gz GRUPO_2
+GRUPO_23        data/raw_data/GRUPO-2-3_S6_L001_R1_001.fastq.gz data/raw_data/GRUPO-2-3_S6_L001_R2_001.fastq.gz GRUPO_2
+GRUPO_31        data/raw_data/GRUPO-3-1_S7_L001_R1_001.fastq.gz data/raw_data/GRUPO-3-1_S7_L001_R2_001.fastq.gz GRUPO_3
+GRUPO_32        data/raw_data/GRUPO-3-2_S8_L001_R1_001.fastq.gz data/raw_data/GRUPO-3-2_S8_L001_R2_001.fastq.gz GRUPO_3
+GRUPO_33        data/raw_data/GRUPO-3-3_S9_L001_R1_001.fastq.gz data/raw_data/GRUPO-3-3_S9_L001_R2_001.fastq.gz GRUPO_3
