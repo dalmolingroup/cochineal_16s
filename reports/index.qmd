@@ -114,6 +114,12 @@ abundance <- vroom::vroom(here("data/ampliseq_results/picrust/METACYC_path_abun_
 
 common_paths <- abundance |> 
   rowwise() %>%
+  mutate(
+    GRUPO_1 = sum(GRUPO_11, GRUPO_12, GRUPO_13),
+    GRUPO_2 = sum(GRUPO_21, GRUPO_22, GRUPO_23),
+    GRUPO_3 = sum(GRUPO_31, GRUPO_32, GRUPO_33)
+  ) |>
+  select(-matches(".*\\d{2}$")) |>
   mutate(total_sum = sum(c_across(starts_with("GRUPO_")), na.rm = TRUE)) %>%
   ungroup() |> 
   slice_max(total_sum, n = 30) |> 
