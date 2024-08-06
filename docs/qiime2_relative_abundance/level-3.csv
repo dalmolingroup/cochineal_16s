@@ -1,10 +1,4 @@
-index,Bacteria;;,Bacteria;Bacteroidota;Bacteroidia,Bacteria;Proteobacteria;Alphaproteobacteria,Bacteria;Acidobacteriota;Acidobacteriae,Bacteria;Actinobacteriota;Actinobacteria,Bacteria;Proteobacteria;Gammaproteobacteria,Bacteria;Planctomycetota;Planctomycetes,;;,Bacteria;Firmicutes;Bacilli,Bacteria;Verrucomicrobiota;Verrucomicrobiae,Bacteria;Armatimonadota;Fimbriimonadia,Bacteria;Bdellovibrionota;Bdellovibrionia,Bacteria;Bdellovibrionota;Oligoflexia,Bacteria;Actinobacteriota;Thermoleophilia,Bacteria;Planctomycetota;Phycisphaerae,Bacteria;Patescibacteria;Saccharimonadia,Bacteria;Abditibacteriota;Abditibacteria,Bacteria;Cyanobacteria;Cyanobacteriia,group
-GRUPO_11,208.0,87840.0,7322.0,875.0,164.0,4304.0,61.0,10.0,0.0,0.0,0.0,4.0,0.0,0.0,0.0,0.0,0.0,0.0,GRUPO_1
-GRUPO_12,391.0,64561.0,14867.0,33.0,3005.0,5347.0,9.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.0,0.0,GRUPO_1
-GRUPO_13,125.0,112921.0,1969.0,194.0,108.0,472.0,24.0,0.0,0.0,4.0,11.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,GRUPO_1
-GRUPO_21,89.0,109440.0,3394.0,240.0,50.0,1177.0,56.0,5.0,0.0,33.0,0.0,2.0,0.0,0.0,0.0,0.0,0.0,6.0,GRUPO_2
-GRUPO_22,298.0,108622.0,7956.0,44.0,1825.0,1833.0,74.0,37.0,5.0,8.0,163.0,4.0,3.0,8.0,0.0,0.0,24.0,0.0,GRUPO_2
-GRUPO_23,41.0,116782.0,515.0,0.0,40.0,100.0,4.0,0.0,14.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,GRUPO_2
-GRUPO_31,3.0,98877.0,5376.0,1023.0,28.0,508.0,131.0,6.0,9.0,64.0,13.0,0.0,0.0,0.0,6.0,7.0,5.0,3.0,GRUPO_3
-GRUPO_32,114.0,84197.0,8445.0,1697.0,80.0,842.0,246.0,0.0,4.0,21.0,22.0,7.0,0.0,0.0,0.0,11.0,4.0,0.0,GRUPO_3
-GRUPO_33,170.0,115882.0,2539.0,631.0,33.0,515.0,43.0,0.0,16.0,3.0,3.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,GRUPO_3
+index,Bacteria;;,Bacteria;Bacteroidota;Bacteroidia,Bacteria;Proteobacteria;Alphaproteobacteria,Bacteria;Acidobacteriota;Acidobacteriae,Bacteria;Actinobacteriota;Actinobacteria,Bacteria;Proteobacteria;Gammaproteobacteria,Bacteria;Planctomycetota;Planctomycetes,;;,Bacteria;Firmicutes;Bacilli,Bacteria;Verrucomicrobiota;Verrucomicrobiae,Bacteria;Armatimonadota;Fimbriimonadia,Bacteria;Bdellovibrionota;Bdellovibrionia,Bacteria;Bdellovibrionota;Oligoflexia,Bacteria;Actinobacteriota;Thermoleophilia,Bacteria;Planctomycetota;Phycisphaerae,Bacteria;Patescibacteria;Saccharimonadia,Bacteria;Abditibacteriota;Abditibacteria,Bacteria;Cyanobacteria;Cyanobacteriia
+GRUPO_1,724,265322,24158,1102,3277,10123,94,10,0,4,11,4,0,0,0,0,5,0
+GRUPO_2,428,334844,11865,284,1915,3110,134,42,19,41,163,6,3,8,0,0,24,6
+GRUPO_3,287,298956,16360,3351,141,1865,420,6,29,88,38,7,0,0,6,18,9,3

@@ -79,6 +79,55 @@ Data was processed with version 2.10.0 of the nf-core/ampliseq pipeline [@straub
 
 ## Relative Taxonomic Abundance
 
+```{r join-groups, include=FALSE}
+library(dplyr)
+library(jsonlite)
+library(vroom)
+library(here)
+
+# Get the list of CSV files in the directory
+csv_files <- list.files(here("data/ampliseq_results/qiime2/barplot/"), pattern = "level-.*\\.csv", full.names = TRUE)
+
+# Process each CSV file
+for (csv_file in csv_files) {
+  # Extract the level number from the filename
+  level_number <- gsub(".*level-(\\d+)\\.csv", "\\1", basename(csv_file))
+
+  # Read the CSV file
+  abunds <- vroom(csv_file)
+
+  readr::write_csv(abunds, here(paste0("docs/qiime2_relative_abundance/level-", level_number, "_old.csv")))
+
+  # Reformat the data
+  reformatted <- abunds |>
+    select(-index, index = group) |>
+    group_by(index) |>
+    summarise(across(everything(), sum)) |>
+    ungroup()
+
+  readr::write_csv(reformatted, here(paste0("docs/qiime2_relative_abundance/level-", level_number, ".csv")))
+
+  # Define the columns for the JSONP response
+  columns <- names(reformatted)
+  bacteria_columns <- columns[-1]  # All columns except 'index'
+
+  # Convert to JSONP format
+  jsonp_response <- paste0(
+    "load_data(", level_number, ",",
+    jsonlite::toJSON(bacteria_columns),
+    ",",
+    jsonlite::toJSON(columns),
+    ",",
+    jsonlite::toJSON(reformatted),
+    ");"
+  )
+
+  # Write the JSONP response to a file
+  output_file <- here(paste0("docs/qiime2_relative_abundance/level-", level_number, ".jsonp"))
+  writeLines(jsonp_response, output_file)
+}
+```
+
 The full data for the calculated taxonomic abundance can be interacted with in the following page: <https://dalmolingroup.github.io/cochineal_16s/qiime2_relative_abundance/>. It enables analysis at every taxonomic level, showing the relative frequency of each taxa at that level.
 
 By far the most abundant taxa is *Candidatus Uzinura*, which has been described previously as an endosymbiont in armored scaled insects [@sabree2013].
