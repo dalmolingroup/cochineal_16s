@@ -132,6 +132,81 @@ The full data for the calculated taxonomic abundance can be interacted with in t
 
 By far the most abundant taxa is *Candidatus Uzinura*, which has been described previously as an endosymbiont in armored scaled insects [@sabree2013].
 
+```{r}
+pivotted <- 
+abunds |> 
+  pivot_longer(!c(index, group), names_to = "taxa", values_to = "rel_abund") |> 
+  group_by(group, taxa) |> 
+  summarise(abund = sum(rel_abund)) |> 
+  ungroup() |> 
+  group_by(group) |> 
+  mutate(relative_abund = abund / sum(abund)) |>
+  ungroup()
+
+
+other_df <- 
+  pivotted |> 
+  group_by(group) |> 
+  summarise(
+    uzinura_abund = sum(relative_abund[grepl("Uzinura", taxa, ignore.case = TRUE)]),
+    other_abund = sum(relative_abund[!grepl("Uzinura", taxa, ignore.case = TRUE)])
+  ) |> 
+  pivot_longer(cols = c(uzinura_abund, other_abund), names_to = "taxa", values_to = "relative_abund") |> 
+  mutate(taxa = ifelse(grepl("uzinura", taxa), "Candidatus Uzinura", "Other taxa"))
+
+rel_abund_chart <- ggplot(other_df, aes(y = relative_abund, x = group, fill = taxa)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::percent_format(), breaks = seq(0, 1, by = 0.2), expand = c(0,0)) +
+  scale_fill_manual(values = c("Candidatus Uzinura" = "#009E73", "Other taxa" = "#D55E00")) +
+  scale_x_discrete(labels = c("GRUPO_1" = "Group 1", "GRUPO_2" = "Group 2", "GRUPO_3" = "Group 3")) +
+  theme_classic() +
+  labs(
+    x = element_blank(),
+    y = "Relative Abundance (%)",
+    fill = "Taxon"
+  )
+
+ggsave(filename = here("results/rel_abund_chart.png"), rel_abund_chart)
+ggsave(filename = here("results/rel_abund_chart.tiff"), rel_abund_chart)
+
+rel_abund_chart
+
+vroom::vroom_write(x = pivotted, file = here("results/abundances.tsv"))
+```
+
+```{r}
+byclass <- pivotted |> 
+  filter(!grepl("Candidatus Uzinura", taxa, ignore.case = TRUE)) |> 
+  mutate(class = str_split_i(taxa, ";", 2)) |> 
+  filter(class != "") |> 
+  select(-taxa)
+
+byclass <- byclass |> 
+  group_by(group, class) |> 
+  summarise(abund = sum(abund)) |> 
+  ungroup() |> 
+  group_by(group) |> 
+  mutate(relative_abund = abund / sum(abund))
+
+rel_abund_chart_no_uzinura <- ggplot(byclass, aes(y = abund, x = group, fill = class)) +
+  geom_col() +
+  scale_y_continuous(labels = scales::label_comma(), expand = c(0,0)) +
+  scale_fill_viridis_d() +
+  scale_x_discrete(labels = c("GRUPO_1" = "Group 1", "GRUPO_2" = "Group 2", "GRUPO_3" = "Group 3")) +
+  theme_classic() +
+  labs(
+    x = element_blank(),
+    y = "Absolute Abundance",
+    fill = "Taxon"
+  )
+
+ggsave(filename = here("results/abs_abund_chart_no_uzinura.png"), rel_abund_chart_no_uzinura)
+ggsave(filename = here("results/abs_abund_chart_no_uzinura.tiff"), rel_abund_chart_no_uzinura)
+
+rel_abund_chart_no_uzinura
+```
+
+
 ## Alpha Diversity
 
 The Shannon Diversity Index was calculated for each sample, here presented by the group they were assigned to in the sample name.
@@ -144,6 +219,13 @@ alpha_div <-
     ),
     comment = "#"
   )
+
+kruskal_result <- kruskal.test(shannon_entropy ~ group, data = alpha_div)
+
+if (kruskal_result$p.value < 0.05) {
+  dunn_result <- dunnTest(Shannon ~ Group, data = df, method = "bonferroni")
+  print(dunn_result)
+}
 
 ggplot(alpha_div, aes(y = group, x = shannon_entropy)) +
   geom_boxplot() +
