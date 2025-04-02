@@ -233,6 +233,7 @@ ggplot(alpha_div, aes(y = group, x = shannon_entropy)) +
     y = element_blank(),
     x = "Shannon Index"
   ) +
+  scale_y_discrete(labels = c("GRUPO_1" = "Group 1", "GRUPO_2" = "Group 2", "GRUPO_3" = "Group 3")) +
   theme_classic()
 ```
 
@@ -255,7 +256,12 @@ common_paths <- abundance |>
   ungroup() |> 
   slice_max(total_sum, n = 30) |> 
   select(-c(pathway, total_sum)) |> 
-  tibble::column_to_rownames("description") |>  
+  tibble::column_to_rownames("description") |>
+  select(
+    "Group 1" = GRUPO_1,
+    "Group 2" = GRUPO_2,
+    "Group 3" = GRUPO_3
+  ) |> 
   as.matrix()
 
 pheat <- pheatmap(
