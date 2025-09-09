@@ -164,7 +164,8 @@ rel_abund_chart <- ggplot(other_df, aes(y = relative_abund, x = group, fill = ta
     x = element_blank(),
     y = "Relative Abundance (%)",
     fill = "Taxon"
-  )
+  ) +
+  theme(legend.text = element_text(face = "italic"))
 
 ggsave(filename = here("results/rel_abund_chart.png"), rel_abund_chart)
 ggsave(filename = here("results/rel_abund_chart.tiff"), rel_abund_chart)
@@ -196,9 +197,10 @@ rel_abund_chart_no_uzinura <- ggplot(byclass, aes(y = abund, x = group, fill = c
   theme_classic() +
   labs(
     x = element_blank(),
-    y = "Absolute Abundance",
+    y = "Bacterial read counts",
     fill = "Taxon"
-  )
+  ) +
+  theme(legend.text = element_text(face = "italic"))
 
 ggsave(filename = here("results/abs_abund_chart_no_uzinura.png"), rel_abund_chart_no_uzinura)
 ggsave(filename = here("results/abs_abund_chart_no_uzinura.tiff"), rel_abund_chart_no_uzinura)
@@ -227,6 +229,8 @@ if (kruskal_result$p.value < 0.05) {
   print(dunn_result)
 }
 
+library(ggsignif)
+
 ggplot(alpha_div, aes(y = group, x = shannon_entropy)) +
   geom_boxplot() +
   labs(
@@ -234,7 +238,34 @@ ggplot(alpha_div, aes(y = group, x = shannon_entropy)) +
     x = "Shannon Index"
   ) +
   scale_y_discrete(labels = c("GRUPO_1" = "Group 1", "GRUPO_2" = "Group 2", "GRUPO_3" = "Group 3")) +
+  
+  # Add non-significant bars between all group comparisons
+  geom_signif(
+    comparisons = list(c("GRUPO_1", "GRUPO_2"), 
+                       c("GRUPO_2", "GRUPO_3"), 
+                       c("GRUPO_1", "GRUPO_3")),
+    map_signif_level = TRUE,
+    annotations = "ns",
+    y_position = c(3.5, 3.7, 3.9), # Adjust these values to position the bars
+    tip_length = 0.01
+  ) +
+  
+  # Add the sample size annotation
+  annotate(
+    "text", 
+    x = Inf,          # Position horizontally at the far right
+    y = -Inf,         # Position vertically at the bottom
+    label = "n=3 per group", 
+    hjust = 1.1,      # Adjust horizontal justification (push it left from the edge)
+    vjust = -0.5,     # Adjust vertical justification (push it up from the bottom)
+    size = 4, 
+    fontface = "italic"
+  ) +
+  
   theme_classic()
+
+ggsave(filename = here("results/alpha_div.png"))
+ggsave(filename = here("results/alpha_div.tiff"))
 ```
 
 ## Functional Prediction
@@ -274,6 +305,7 @@ pheat <- pheatmap(
   fontsize = 10
   # ,main = title
 )
+
 pheat
 ```
 
